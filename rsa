@@ -1,31 +1,48 @@
 #!/usr/bin/python3
-import sys
+from sys import argv
+import math
+""" factorize large number to a product of 2 small numbers"""
 
 
-# fn unpack number factorial
-def fc():
-    """
-    function fc to search file to convert number and format n = p * q
-    """
-    try:
-        revfile = sys.argv[1]
-        with open(revfile) as f:
-            for prime_num in f:
-                prime_num = int(prime_num)
-                if prime_num % 2 == 0:
-                        print("{}={}*{}".format(prime_num, prime_num // 2, 2))
-                        continue
-                i = 3
-                while i < prime_num // 2:
-                    if prime_num % i == 0:
-                        print("{}={}*{}".format(prime_num, prime_num // i, i))
-                        break
-                    i = i + 2
-                if i == (prime_num // 2) + 1:
-                    print("{}={}*{}".format(prime_num, prime_num, 1))
-    except (IndexError):
-        pass
+def is_prime_num(num):
+    """ checks if prime number"""
+    i = 3
+    if num % 2 == 0:
+        return False
+    while i * i <= num:
+        if num % i == 0:
+            return False
+        i += 2
+    return True
 
 
-# auto start
-fc()
+def factorial(num):
+    """gets factors of num
+    Args: num (int): number"""
+    if num % 2 == 0:
+        i = 2
+        print("{}={}*{}".format(num, int(num//i), i))
+    else:
+        sq_root = math.sqrt(num)
+        if sq_root % 1 == 0:
+            print("{}={}*{}".format(num, sq_root, int(num/sq_root)))
+            return
+        sq_root = int(sq_root) + 1
+        for i in range(3, sq_root, 2):
+            if num % i == 0:
+                if is_prime_num(i):
+                    print("{}={}*{}".format(num, int(num/i), i))
+                    return
+
+
+def factors(fname):
+    """ opens, reads and prints factors in file"""
+
+    with open(fname) as f:
+        for i in f.readlines():
+            nm = int(i)
+            result = factorial(nm)
+
+
+if __name__ == "__main__":
+    factors(argv[1])
