@@ -1,20 +1,37 @@
 #!/usr/bin/python3
 from sys import argv
-def factorize(value):
-    i = 2
-    if value < 2:
-        return
-    while value % i:
-        i += 1
-    print("{:.0f}={:.0f}*{:.0f}".format(value, value / i, i))
-if len(argv) != 2:
-    exit()
-try:
-    with open(argv[1]) as file:
-        line = file.readline()
-        while line != "":
-            value = int(line.split('\n')[0])
-            factorize(value)
-            line = file.readline()
-except:
-    pass
+import math
+""" factorize large number to a product of 2 small numbers"""
+
+
+def factorial(num):
+    """gets factors of num
+    Args: num (int): number"""
+    if num % 2 == 0:
+        i = 2
+        print("{}={}*{}".format(num, int(num//i), i))
+    else:
+        sq_rt = int(math.sqrt(num)) + 1
+        for i in range(3, sq_rt, 2):
+            if num % i == 0:
+                print("{}={}*{}".format(num, int(num//i), i))
+                return
+            if num % (sq_rt + i) == 0:
+                print("{}={}*{}".format(num, sq_rt + i, int(num//(sq_rt + i))))
+                return
+            if num % (sq_rt - i) == 0:
+                print("{}={}*{}".format(num, sq_rt - i, int(num//(sq_rt - i))))
+                return
+
+
+def factors(fname):
+    """ opens, reads and prints factors in file"""
+
+    with open(fname) as f:
+        for i in f.readlines():
+            nm = int(i)
+            result = factorial(nm)
+
+
+if __name__ == "__main__":
+    factors(argv[1])
